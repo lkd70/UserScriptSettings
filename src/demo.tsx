@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { UserScriptSettings, SettingType, SettingsUIConfig, DEFAULT_THEMES, SettingDefinition } from './settings';
-import SettingsUI from './settings-ui';
+import { SettingsUI } from './settings-ui';
 
 // Initialize settings
 const settings = UserScriptSettings.initialize('demo-settings', '1.0.0');
