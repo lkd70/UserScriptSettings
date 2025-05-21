@@ -1,6 +1,6 @@
 {
   "name": "@lkd70/userscript-settings",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A flexible and type-safe settings management system for UserScripts with a modern React-based UI",
   "type": "module",
   "main": "dist/index.js",

@@ -3,10 +3,17 @@ name: Build and Release UserScript
 on:
   push:
     branches: [ main, master ]
+    tags:
+      - 'v*.*.*'
   pull_request:
   release:
     types: [created]
   workflow_dispatch:
+
+# Add permissions block
+permissions:
+  contents: write
+  packages: write
 
 jobs:
   build:
@@ -34,9 +41,11 @@ jobs:
           path: dist/userscript-settings.user.js
 
   release:
-    if: github.event_name == 'release'
+    if: github.event_name == 'release' || startsWith(github.ref, 'refs/tags/')
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
@@ -44,15 +53,22 @@ jobs:
           name: userscript-settings.user.js
           path: dist/
 
-      - name: Upload to GitHub Release
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ env.VERSION }}
+          name: Release ${{ env.VERSION }}
           files: dist/userscript-settings.user.js
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish:
-    if: github.event_name == 'release'
+    if: github.event_name == 'release' || startsWith(github.ref, 'refs/tags/')
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -71,6 +87,13 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Update package version
+        run: npm version ${{ env.VERSION }} --no-git-tag-version
 
       - name: Publish to NPM
         run: npm publish --access public
