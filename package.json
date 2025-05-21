@@ -1,16 +1,19 @@
 {
-  "name": "userscript-settings",
+  "name": "@lkd70/userscript-settings",
   "version": "1.0.0",
   "description": "A flexible and type-safe settings management system for UserScripts with a modern React-based UI",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "rollup -c",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "userscript",
@@ -20,6 +23,17 @@
   ],
   "author": "LKD70",
   "license": "AGPL-3.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LKD70/UserScriptSettings.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LKD70/UserScriptSettings/issues"
+  },
+  "homepage": "https://github.com/LKD70/UserScriptSettings#readme",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
